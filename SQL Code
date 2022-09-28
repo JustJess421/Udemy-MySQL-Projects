@@ -1,0 +1,1773 @@
+Creating Databases and Tables
+
+CREATE DATABASE IF NOT EXISTS Sales;
+USE Sales;
+CREATE TABLE Sales
+(
+	purchase_number INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    date_of_purchase DATE NOT NULL,
+    customer_id INT,
+    item_code VARCHAR(10) NOT NULL
+    );
+CREATE TABLE Customers
+(
+	customer_id INT,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email_address VARCHAR(255),
+    number_of_complaints int
+    );
+    
+    DROP TABLE customers;
+    DROP TABLE customers1;
+  
+  USE Sales;
+  SELECT * FROM Sales;
+  
+  SELECT * FROM Sales.Sales;
+  
+  DROP TABLE Sales;
+  
+  CREATE TABLE Sales
+(
+	purchase_number INT NOT NULL AUTO_INCREMENT,
+    date_of_purchase DATE NOT NULL,
+    customer_id INT,
+    item_code VARCHAR(10) NOT NULL,
+    PRIMARY KEY(purchase_number)
+    );
+    
+ALTER TABLE Sales
+ADD FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
+    
+    DROP TABLE Customers;
+    
+    CREATE TABLE Customers
+(
+	customer_id INT,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email_address VARCHAR (255),
+    number_of_compliants INT,
+    PRIMARY KEY (customer_id)
+);
+
+CREATE TABLE Items
+(
+	item_code VARCHAR(255),
+    item VARCHAR(255),
+    unit_price NUMERIC(10,2),
+    company_id VARCHAR(255),
+    PRIMARY KEY (item_code)
+);
+
+DROP TABLE Items
+  
+CREATE TABLE Companies
+(
+	company_id VARCHAR(255),
+    company_name VARCHAR(255),
+    headquarters_phone_number INT(12),
+    PRIMARY KEY (company_id)
+);
+
+DROP TABLE Sales;
+DROP TABLE Customers;
+DROP TABLE Items;
+DROP TABLE Companies;
+
+CREATE TABLE customers
+(
+	customer_id INT AUTO_INCREMENT,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email_address VARCHAR(255),
+    number_of_complaints INT,
+    PRIMARY KEY (customer_id)
+    );
+    
+ALTER TABLE customers
+ADD COLUMN gender ENUM('M','F') AFTER last_name
+  
+INSERT INTO customers (first_name, last_name, gender, email_address, number_of_complaints)
+
+VALUES ('John', 'Mackinley', 'M', 'john.mckinley@365careers.com', 0)
+
+SELECT * FROM customers
+
+ALTER TABLE customers
+CHANGE COLUMN number_of_complaints number_of_complaints INT DEFAULT 0;
+
+INSERT INTO customers (first_name, last_name, gender)
+VALUES ('Peter', 'Figaro', 'M');
+
+SELECT * FROM customers
+
+ALTER TABLE customers
+ALTER COLUMN number_of_complaints DROP DEFAULT;
+
+CREATE TABLE companies
+(
+	company_id INT AUTO_INCREMENT,
+    company_name VARCHAR(255) NOT NULL,
+    headquarters_phone_number VARCHAR(255),
+    PRIMARY KEY (company_id)
+);
+DROP TABLE companies
+
+Editing Tables
+
+USE employees;
+
+COMMIT;
+
+SELECT *
+FROM employees
+WHERE emp_no = '999903';
+
+SELECT *
+FROM titles
+WHERE emp_no = '999903';
+
+DELETE FROM employees
+WHERE emp_no = '999903';
+
+ROLLBACK;
+
+#Remove the department number 10 record from the “departments” table.
+
+SELECT * FROM departments;
+
+COMMIT;
+
+DELETE FROM departments
+WHERE dept_no = 'd010';
+
+SELECT 
+    *
+FROM
+    employees
+    ORDER BY emp_no DESC
+LIMIT 10;
+
+INSERT INTO employees 
+(
+emp_no, birth_date, first_name, last_name, gender, hire_date
+) VALUES
+ (
+ 999901,
+ '1986-04-21',
+ 'John',
+ 'Smith',
+ 'M',
+ '2011-01-01');
+ 
+ INSERT INTO employees 
+(
+emp_no, birth_date, first_name, last_name, gender, hire_date
+) VALUES
+ (
+ 999903,
+ '1979-09-14',
+ 'Johathon',
+ 'Creek',
+ 'M',
+ '1999-01-01');
+ 
+#Select ten records from the “titles” table to get a better idea about its content.
+#Then, in the same table, insert information about employee number 999903. State that he/she is a “Senior Engineer”, who has started working in this position on October 1st, 1997.
+#At the end, sort the records from the “titles” table in descending order to check if you have successfully inserted the new record.
+
+SELECT 
+    *
+FROM
+    titles
+    LIMIT 10;
+    
+INSERT INTO titles (emp_no, title, from_date)
+VALUES (99903, 'Senior Engineer', '1997-10-01')
+
+#Insert information about the individual with employee number 999903 into the “dept_emp” table. 
+#He/She is working for department number 5, and has started work on  October 1st, 1997; her/his contract is for an indefinite period of time.
+
+SELECT * FROM dept_emp LIMIT 10;
+
+INSERT INTO dept_emp 
+VALUES (999903, 'd005', '1997-10-01', '999-01-01');
+
+#Creating a table by pulling data from another table in database
+
+CREATE TABLE department_dup 
+(dept_no CHAR(4) NOT NULL, dept_name VARCHAR(40) NOT NULL);
+
+INSERT INTO department_dup 
+(dept_no, Dept_name)
+SELECT * 
+	FROM departments;
+    
+SELECT * FROM department_dup;
+
+#Create a new department called “Business Analysis”. Register it under number ‘d010’.
+
+INSERT INTO departments (dept_no, dept_name)
+VALUES ('d010', 'Business Analysis');
+
+SELECT * FROM departments;
+
+USE employees;
+
+UPDATE employees
+SET 
+	first_name = 'Stella',
+    last_name = 'Parkenson',
+    birth_date = '1990-12-31',
+    gender = 'F'
+WHERE 
+	emp_no = 999901;
+    
+SELECT 
+    *
+FROM
+    department_dup
+ORDER BY dept_no;
+
+COMMIT;
+
+UPDATE department_dup
+SET 
+	dept_no = 'd011',
+    dept_name = 'Quality Control';
+    
+ROLLBACK;
+
+COMMIT;
+
+#Change the “Business Analysis” department name to “Data Analysis”.
+
+SELECT * FROM departments;
+
+UPDATE departments
+SET
+	dept_name = 'Data Analysis'
+WHERE dept_no = 'd010';
+
+
+SELECT Statements
+
+SELECT 
+    dept_no
+FROM
+    departments;
+    
+SELECT 
+    *
+FROM
+    departments;
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name = 'Elvis';
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    gender = 'F' AND first_name = 'Kellie';
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name = 'kellie'
+        OR first_name = 'aruna';
+        
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    gender = 'f'
+        AND (first_name = 'kellie'
+        OR first_name = 'aruna');
+        
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name IN ('denis' , 'elvis');
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name NOT IN ('john' , 'mark', 'jacob');
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name LIKE ('mark%');
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    hire_date LIKE ('2000%');
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    emp_no LIKE ('1000_');
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name LIKE ('%jack%');
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name NOT LIKE ('%jack%');
+    
+SELECT 
+    *
+FROM
+    salaries
+WHERE
+    salary BETWEEN 66000 AND 70000;
+    
+SELECT 
+    *
+FROM
+    salaries
+WHERE
+    emp_no NOT BETWEEN 1004 AND 10012;
+    
+SELECT 
+    dept_name
+FROM
+    departments
+WHERE
+    dept_no BETWEEN 'd003' AND 'd006'; 
+
+SELECT 
+    dept_name
+FROM
+    departments
+WHERE
+    dept_no IS NOT NULL;
+    
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    hire_date >= '2000-01-01'
+        AND gender = 'f';
+        
+SELECT DISTINCT
+    hire_date
+FROM
+    employees;
+    
+SELECT 
+    COUNT(*)
+FROM
+    salaries
+WHERE
+    salary >= 100000;
+    
+SELECT 
+    COUNT(*)
+FROM
+    dept_manager;
+    
+SELECT 
+    *
+FROM
+    employees
+ORDER BY hire_date DESC;
+
+SELECT 
+    salary, COUNT(emp_no) AS emps_with_same_salary
+FROM
+    salaries
+WHERE
+    salary > 80000
+GROUP BY salary
+ORDER BY salary;
+
+SELECT 
+    *, AVG(salary)
+FROM
+    salaries
+WHERE
+    salary > 120000
+GROUP BY emp_no
+ORDER BY emp_no;
+
+SELECT 
+    emp_no, AVG(salary)
+FROM
+    salaries
+GROUP BY emp_no
+HAVING AVG(salary) > 120000
+ORDER BY emp_no;
+
+SELECT 
+    *, AVG(salary)
+FROM
+    salaries
+WHERE
+    salary > 120000
+GROUP BY emp_no
+ORDER BY emp_no;
+
+SELECT 
+    *
+FROM
+    dept_emp;
+    
+SELECT 
+    emp_no
+FROM
+    dept_emp
+WHERE
+    from_date > '2000-01-01'
+GROUP BY emp_no
+ORDER BY emp_no;
+
+SELECT 
+    *
+FROM
+    dept_emp
+LIMIT 100;
+
+JOINS/SELF JOINS
+
+#Preparing duplicate tables to use joins
+
+ALTER TABLE department_dup
+	DROP COLUMN dept_manager;
+    
+ALTER TABLE department_dup
+	CHANGE COLUMN dept_no dept_no CHAR(4) NULL;
+    
+ALTER TABLE department_dup
+	CHANGE COLUMN dept_name dept_name VARCHAR(40) NULL;
+    
+SELECT * FROM department_dup;
+
+DROP TABLE IF EXISTS dept_manager_dup;
+CREATE TABLE dept_manager_dup 
+(emp_no int(11) NOT NULL,
+dept_no char(4) NULL,
+from_date date NOT NULL,
+to_date date NULL);
+
+INSERT INTO dept_manager_dup (emp_no, from_date)
+	VALUES  (999904, '2017-01-01'),
+			(999905, '2017-01-01'),
+			(999906, '2017-01-01'),
+			(999907, '2017-01-01');
+            
+INSERT INTO dept_manager_dup
+	select * from dept_manager;
+            
+DELETE FROM dept_manager_dup
+	WHERE dept_no = 'd001';
+    
+INSERT INTO department_dup (dept_name)
+VALUES ('Public Relations');
+
+DELETE FROM department_dup
+	WHERE dept_no = 'd002'; 
+
+# INNER JOINS
+    
+SELECT *
+	FROM dept_manager_dup
+    ORDER BY dept_no;
+
+SELECT * 
+	FROM department_dup
+    ORDER BY dept_no;
+    
+SELECT m.dept_no, m.emp_no, d.dept_name
+	FROM dept_manager_dup m
+    INNER JOIN department_dup d ON m.dept_no = d.dept_no
+    ORDER BY m.dept_no;
+    
+#Extract a list containing information about all managers’ employee number, first and last name, department number, and hire date. 
+
+SELECT e.emp_no, e.first_name, e.last_name, e.hire_date, d.dept_no
+	FROM employees e 
+    INNER JOIN dept_manager_dup d ON e.emp_no = d.emp_no
+    ORDER BY e.emp_no;
+    
+# LEFT JOINS
+
+SELECT m.dept_no, m.emp_no, d.dept_name
+	FROM dept_manager_dup m
+    LEFT JOIN department_dup d ON m.dept_no = d.dept_no
+    ORDER BY m.dept_no;
+    
+#switching the tables 
+
+SELECT d.dept_no, m.emp_no, d.dept_name
+	FROM department_dup d
+    LEFT JOIN dept_manager_dup m ON m.dept_no = d.dept_no
+    ORDER BY d.dept_no;
+    
+#Join the 'employees' and the 'dept_manager' tables to return a subset of all the employees whose last name is Markovitch.
+# See if the output contains a manager with that name.  
+
+SELECT e.emp_no, e.first_name, e.last_name, d.dept_no, d.from_date
+	FROM employees e
+    LEFT JOIN dept_manager d ON e.emp_no = d.emp_no
+    WHERE e.last_name = 'Markovitch'
+    ORDER BY d.dept_no DESC, e.emp_no;
+    
+# RIGHT JOINS
+
+SELECT m.dept_no, m.emp_no, d.dept_name
+	FROM dept_manager_dup m
+    RIGHT JOIN department_dup d ON m.dept_no = d.dept_no
+    ORDER BY m.dept_no;
+
+SELECT d.dept_no, m.emp_no, d.dept_name
+	FROM dept_manager_dup m
+    RIGHT JOIN department_dup d ON m.dept_no = d.dept_no
+    ORDER BY m.dept_no;
+    
+# Extract a list containing information about all managers’ employee number, first and last name, department number, and hire date.
+# Use the old type of join syntax to obtain the result.
+
+SELECT e.emp_no, e.first_name, e.last_name, d.dept_no, e.hire_date
+FROM employees e, dept_manager d
+WHERE e.emp_no = d.emp_no;
+
+# JOIN and WHERE in same query
+
+# Joining tables to find out the first name and last name of employees who make more than $145,000
+
+SELECT e.emp_no, e.first_name, e.Last_name, s.salary
+FROM employees e
+	JOIN salaries s ON e.emp_no = s.emp_no
+    WHERE s.salary > 145000;
+    
+set @@global.sql_mode := replace(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', '');
+    
+# Select the first and last name, the hire date, and the job title of all employees whose 
+# first name is “Margareta” and have the last name “Markovitch”.
+
+SELECT e.emp_no, e.first_name, e.last_name, e.hire_date, t.title
+FROM employees e
+	JOIN titles t ON e.emp_no = t.emp_no
+    WHERE e.first_name = 'Margareta' AND e.last_name = 'Markovitch'
+    ORDER BY e.emp_no;
+    
+# CROSS JOIN
+
+SELECT dm.*, d.*
+FROM dept_manager dm
+	CROSS JOIN departments d
+     ORDER BY dm.emp_no, d.dept_no;
+    
+# Use a CROSS JOIN to return a list with all possible combinations between managers from the dept_manager table and department number 9.
+
+SELECT dm.*, d.*
+FROM dept_manager dm
+	CROSS JOIN departments d
+    WHERE dm.dept_no = 'D009'
+    ORDER BY d.dept_no;
+    
+# Return a list with the first 10 employees with all the departments they can be assigned to.
+ 
+SELECT e.*, d.*
+FROM employees e
+	CROSS JOIN departments d
+	WHERE e.emp_no < 10011
+	ORDER BY e.emp_no, d.dept_name;
+   
+   # Using Agg. functions in JOINS
+   
+   # Find the average salaies of men and women in the company.
+   
+   SELECT e.gender, AVG(s.salary) AS Average_Salary
+	FROM employees e
+    JOIN salaries s ON e.emp_no = s.emp_no
+    GROUP BY e.gender;
+    
+# Joining more than one table
+
+SELECT e.first_name, e.Last_name, e.hire_date, m.from_date, d.dept_name
+FROM employees e
+JOIN dept_manager m ON e.emp_no = m.emp_no
+JOIN departments d ON m.dept_no = d.dept_no;
+
+# Select all managers’ first and last name, hire date, job title, start date, and department name.
+
+SELECT e.first_name, e.last_name, e.hire_date,  t.title, dm.from_date, d.dept_name
+FROM employees e
+	JOIN dept_manager dm ON e.emp_no= dm.emp_no
+    JOIN departments d ON dm.dept_no = d.dept_no
+    JOIN titles t ON e.emp_no = t.emp_no
+    WHERE t.title = 'Manager'
+    ORDER BY e.emp_no;
+    
+# How many male and how many female managers do we have in the ‘employees’ database?
+
+SELECT e.gender, COUNT(d.emp_no)
+FROM employees e
+JOIN dept_manager d ON e.emp_no = d.emp_no
+GROUP BY e.gender; 
+
+# UNIONS
+
+#Preparing table for UNIONS
+
+CREATE TABLE employees_dup
+	(emp_no int(11),
+    birth_date date,
+    first_name VARCHAR(14),
+    last_name VARCHAR(16),
+    gender enum('M', 'F'),
+    hire_date date);
+    
+    INSERT INTO employees_dup
+    SELECT e.*
+    FROM employees e
+    LIMIT 20;
+    
+    SELECT * FROM employees_dup;
+    
+    INSERT INTO employees_dup
+		VALUES ('10001', '1953-09-02', 'Georgi', 'Facello', 'M', '1986-06-26');
+        
+SELECT e.emp_no, e.first_name, e.last_name, NULL AS dept_no, NULL AS from_date
+FROM employees_dup e
+WHERE e.emp_no = 10001
+UNION ALL SELECT NULL AS emp_no, NULL AS first_name, NULL AS last_name, m.dept_no, m.from_date
+from dept_manager m;
+
+SELECT e.emp_no, e.first_name, e.last_name, NULL AS dept_no, NULL AS from_date
+FROM employees_dup e
+WHERE e.emp_no = 10001
+UNION SELECT NULL AS emp_no, NULL AS first_name, NULL AS last_name, m.dept_no, m.from_date
+from dept_manager m;
+
+SELECT
+	*
+FROM
+	(SELECT
+		e.emp_no,
+			e.first_name,
+			e.last_name,
+			NULL AS dept_no,
+			NULL AS from_date
+	FROM employees e
+	WHERE last_name = 'Denis' 
+    UNION SELECT
+			NULL AS emp_no,
+			NULL AS first_name,
+			NULL AS last_name,
+			dm.dept_no, 
+			dm.from_date
+	FROM dept_manager dm) as a
+	ORDER BY -a.emp_no DESC;
+# From the emp_manager table, extraxt the record data of employees who are managers ae well.
+
+SELECT 
+    *
+FROM
+    emp_manager
+ORDER BY emp_manager.emp_no;
+
+SELECT 
+    e1.*
+FROM
+    emp_manager e1
+        JOIN
+    emp_manager e2 ON e1.emp_no = e2.manager_no;
+    
+SELECT 
+    e2.*
+FROM
+    emp_manager e1
+        JOIN
+    emp_manager e2 ON e1.emp_no = e2.manager_no;
+    
+SELECT 
+    e1.emp_no, e1.dept_no, e2.manager_no
+FROM
+    emp_manager e1
+        JOIN
+    emp_manager e2 ON e1.emp_no = e2.manager_no;
+    
+SELECT DISTINCT
+    e1.*
+FROM
+    emp_manager e1
+        JOIN
+    emp_manager e2 ON e1.emp_no = e2.manager_no;
+    
+SELECT 
+    e1.*
+FROM
+    emp_manager e1
+        JOIN
+    emp_manager e2 ON e1.emp_no = e2.manager_no
+WHERE e2.emp_no IN
+		(SELECT manager_no
+				FROM emp_manager);
+
+Aggregate Functions
+
+#COUNT()
+
+SELECT *
+FROM salaries
+ORDER BY salary DESC
+LIMIT 10;
+
+SELECT 
+	COUNT(salary)
+FROM salaries;
+
+#How many employee starts dates are in the database?
+
+SELECT 
+	COUNT(from_date)
+FROM salaries;
+
+#967,330 shows all the records in the database, need DISTINCT to get how many different starts dates there are
+
+SELECT 
+	COUNT(DISTINCT from_date)
+FROM salaries;
+
+#6,392 different start dates
+
+#How many departments are there in the “employees” database? Use the ‘dept_emp’ table to answer the question.
+
+SELECT * FROM dept_emp;
+
+SELECT
+	COUNT(DISTINCT dept_no)
+FROM dept_emp;
+
+#There are 9 distinct departments in the "employees" database.
+
+#SUM()
+
+SELECT
+	SUM(salary)
+FROM salaries;
+
+#What is the total amount of money spent on salaries for all contracts starting after the 1st of January 1997?
+
+SELECT 
+	SUM(salary)
+FROM salaries
+WHERE from_date > '1997-01-01';
+
+#$31,909,143,195
+
+#which is the highest salary we offer?
+
+SELECT 
+	MAX(salary)
+FROM salaries;
+
+#$158,200
+
+#Which is the lowest?
+
+SELECT 
+	MIN(salary)
+FROM salaries;
+
+#$38,735
+
+#1. Which is the lowest employee number in the database?
+ 
+ SELECT 
+    MIN(emp_no)
+FROM employees;
+
+#10001
+
+#2. Which is the highest employee number in the database?
+ 
+SELECT 
+    MAX(emp_no)
+FROM employees;
+#999903
+
+#What is the average salary of our employees?
+
+SELECT 
+	AVG(salary)
+FROM salaries;
+
+#$63,761.20
+
+#What is the average annual salary paid to employees who started after the 1st of January 1997?
+
+SELECT 
+	AVG(salary)
+FROM salaries
+WHERE from_date > '1997-01-01';
+
+#$67,717.75
+
+#to round your numbers
+
+SELECT 
+	ROUND(AVG(salary))
+FROM salaries
+WHERE from_date > '1997-01-01';
+#$67,718
+
+#Round the average amount of money spent on salaries for all contracts that started after the 1st of January 1997 to a precision of cents.
+
+SELECT 
+	ROUND(AVG(salary),2)
+FROM salaries
+WHERE from_date > '1997-01-01';
+#$67,717.75
+
+# COALESCE()
+
+SELECT *
+FROM department_dup;
+
+ALTER TABLE departments_dup
+CHANGE COLUMN dept_name dept_name VARCHAR(40) NULL; 
+
+INSERT INTO department_dup(dept_no) VALUES ('d010'), ('d011');
+
+SELECT
+*
+FROM 
+department_dup
+ORDER BY dept_no ASC; 
+
+ALTER TABLE employees.department_dup
+ADD COLUMN dept_manager VARCHAR(255) NULL AFTER dept_name;
+
+COMMIT;
+
+#what to do to change the "null" symbol to say something like "info not provided"
+
+SELECT 
+	dept_no ,
+    IFNULL(dept_name, 'Department not provided') as dept_name
+FROM department_dup;
+
+SELECT *
+FROM department_dup
+ORDER By dept_no;
+
+SELECT 
+	dept_no, 
+    dept_name,
+    COALESCE(dept_manager, dept_name, 'N/A') AS dept_manager
+FROM department_dup
+ORDER BY dept_no ASC;
+
+SELECT 
+	dept_no, 
+    dept_name,
+    COALESCE('department manager name') AS fake_col
+FROM department_dup
+ORDER BY dept_no ASC;
+
+#Select the department number and name from the ‘departments_dup’ table and add a third column where you name the department number (‘dept_no’) as ‘dept_info’. 
+#If ‘dept_no’ does not have a value, use ‘dept_name’.
+
+SELECT
+	dept_no,
+    dept_name, 
+    COALESCE(dept_no, dept_name) AS dept_info
+FROM
+	department_dup
+ORDER BY dept_no ASC;
+
+#Modify the code obtained from the previous exercise in the following way. 
+#Apply the IFNULL() function to the values from the first and second column, so that ‘N/A’ is displayed whenever a department number has no value, 
+#and ‘Department name not provided’ is shown if there is no value for ‘dept_name
+
+SELECT
+	IFNULL(dept_no, 'N/A') as dept_no,
+	IFNULL(dept_name,'Department name not provided') AS dept_name,
+	COALESCE(dept_no, dept_name) AS dept_info
+FROM
+	department_dup
+ORDER BY dept_no ASC;
+
+CASE Statements
+
+USE employees;
+
+UPDATE employees
+SET 
+	first_name = 'Stella',
+    last_name = 'Parkenson',
+    birth_date = '1990-12-31',
+    gender = 'F'
+WHERE 
+	emp_no = 999901;
+    
+SELECT 
+    *
+FROM
+    department_dup
+ORDER BY dept_no;
+
+COMMIT;
+
+UPDATE department_dup
+SET 
+	dept_no = 'd011',
+    dept_name = 'Quality Control';
+    
+ROLLBACK;
+
+COMMIT;
+
+#Change the “Business Analysis” department name to “Data Analysis”.
+
+SELECT * FROM departments;
+
+UPDATE departments
+SET
+	dept_name = 'Data Analysis'
+WHERE dept_no = 'd010';
+
+Creating Indexes
+
+# Creating indexes
+
+CREATE INDEX i_hire_date ON employees(hire_date);
+
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    hire_date > '2000-01-01';
+
+# Composite indexes (more than one column)
+
+CREATE INDEX i_composite ON employees(first_name, last_name);
+
+SELECT * FROM employees where first_name = 'Georgi' AND last_name = 'Facello';
+
+ALTER TABLE employees
+DROP INDEX i_hire_date;
+
+SELECT * FROM salaries WHERE salary > 89000;
+
+CREATE INDEX 1_salary on salaries(salary);
+
+Creating Views
+
+SELECT 
+    *
+FROM
+    dept_emp;
+    
+SELECT 
+    emp_no, from_date, to_date, COUNT(emp_no) AS num
+FROM
+    dept_emp
+GROUP BY emp_no
+HAVING num > 1;
+
+# Visualize only the period emcompassing the last contact of each employee
+
+CREATE OR REPLACE VIEW v_dept_emp_lastest_date AS
+    SELECT 
+        emp_no, MAX(from_date) AS from_date, MAX(to_date) AS to_date
+    FROM
+        dept_emp
+    GROUP BY emp_no;
+    
+# Create a view that will extract the average salary of all managers registered in the database. Round this value to the nearest cent.
+
+CREATE OR REPLACE VIEW v_manager_avg_salary AS
+    SELECT 
+        ROUND(AVG(salary), 2)
+    FROM
+        salaries s
+            JOIN
+        dept_manager e ON s.emp_no = e.emp_no;
+        
+	SELECT * FROM v_manager_avg_salary;
+
+Stored Routines
+
+USE employees;
+
+# Create procedure that calls the first 1000 rows from the employees table
+
+DROP PROCEDURE IF EXISTS select_employees;
+
+DELIMITER $$
+CREATE PROCEDURE select_employees()
+BEGIN
+SELECT 
+    *
+FROM
+    employees
+LIMIT 1000;
+
+END$$
+
+DELIMITER ; 
+
+CALL employees.select_employees();
+
+#Create a procedure that will provide the average salary of all employees.
+#Then, call the procedure.
+
+DROP PROCEDURE IF EXISTS avg_salary;
+
+DELIMITER $$
+CREATE PROCEDURE select_employees()
+BEGIN
+SELECT 
+    *
+FROM
+    employees
+LIMIT 1000;
+
+END$$
+
+DELIMITER ; 
+
+CALL avg_salary();
+
+# stored procedures with parameters
+
+DROP PROCEDURE IF EXISTS emp_salary;
+
+DELIMITER $$
+CREATE PROCEDURE emp_salary(IN p_emp_no INTEGER)
+BEGIN
+SELECT 
+    e.first_name, e.last_name, s.salary, s.from_date, s.to_date
+FROM
+    employees e
+        JOIN
+    salaries s ON e.emp_no = s.emp_no
+WHERE
+    e.emp_no = p_emp_no;
+
+END$$
+DELIMITER ; 
+
+call employees.emp_salary(11300);
+
+DELIMITER $$
+CREATE PROCEDURE emp_avg_salary(IN p_emp_no INTEGER)
+BEGIN
+SELECT 
+    e.first_name, e.last_name, AVG(s.salary)emp_avg_salary
+FROM
+    employees e
+        JOIN
+    salaries s ON e.emp_no = s.emp_no
+WHERE
+    e.emp_no = p_emp_no;
+
+END$$
+DELIMITER ;
+
+call employees.emp_avg_salary(11300);
+
+DELIMITER $$
+CREATE PROCEDURE emp_avg_salary_out(IN p_emp_no INTEGER, OUT p_avg_salary DECIMAL(10,2))
+BEGIN
+SELECT 
+    AVG(s.salary)
+INTO p_avg_salary
+FROM
+    employees e
+        JOIN
+    salaries s ON e.emp_no = s.emp_no
+WHERE
+    e.emp_no = p_emp_no;
+
+END$$
+DELIMITER ;
+
+# Create a procedure called ‘emp_info’ that uses as parameters the first and the last name of an individual, and returns their employee number.
+
+DELIMITER $$
+CREATE PROCEDURE emp_info(IN p_first_name VARCHAR(255), p_last_name VARCHAR(255), OUT p_emp_no INTEGER)
+BEGIN
+SELECT 
+    emp_no INTO p_emp_no
+    FROM employees
+WHERE first_name = p_first_name AND last_name = p_last_name;
+END$$
+DELIMITER ;
+
+# Creating Varibles
+
+SET @v_avg_salary = 0;
+CALL employees.emp_avg_salary_out(11300, @v_avg_salary);
+SELECT @v_avg_salary;
+
+# Create a variable, called ‘v_emp_no’, where you will store the output of the procedure you created in the last exercise.
+# Call the same procedure, inserting the values ‘Aruna’ and ‘Journel’ as a first and last name respectively.
+# Finally, select the obtained output
+
+SET @v_emp_no = 0;
+CALL employees.emp_info('Aruna', 'Journel', @v_emp_no);
+SELECT @v_emp_no;
+
+# User Defined Functions
+
+DELIMITER $$
+CREATE FUNCTION f_emp_avg_salary (p_emp_no INTEGER) RETURNS DECIMAL (10,2)
+DETERMINISTIC NO SQL READS SQL DATA
+BEGIN
+DECLARE v_avg_salary DECIMAL (10,2);
+SELECT 
+	AVG(s.salary)
+INTO v_avg_salary FROM
+		employees e 
+			JOIN salary s ON e.emp_no = s.emp_no
+            WHERE e.emp_no = p_emp_no;
+            
+RETURN v_avg_salary;
+END$$
+
+DELIMITER ; 
+
+SELECT f_emp_avg_salary(11300);
+
+#Create a function called ‘emp_info’ that takes for parameters the first and last name of an employee, and returns the salary from the newest contract of that employee.
+#Hint: In the BEGIN-END block of this program, you need to declare and use two variables – v_max_from_date that will be of the DATE type, and v_salary, that will be of the DECIMAL (10,2) type.
+#Finally, select this function.
+
+DELIMITER $$
+CREATE FUNCTION emp_info(p_first_name varchar(255), p_last_name varchar(255)) RETURNS decimal(10,2)
+DETERMINISTIC NO SQL READS SQL DATA
+BEGIN
+DECLARE v_max_from_date date;
+DECLARE v_salary decimal(10,2);
+SELECT
+	MAX(from_date)
+INTO v_max_from_date FROM
+	employees e
+	JOIN salaries s ON e.emp_no = s.emp_no
+	WHERE
+	e.first_name = p_first_name	AND e.last_name = p_last_name;
+SELECT
+	s.salary
+INTO v_salary FROM
+	employees e
+		JOIN salaries s ON e.emp_no = s.emp_no
+		WHERE
+		e.first_name = p_first_name
+		AND e.last_name = p_last_name
+		AND s.from_date = v_max_from_date;
+RETURN v_salary;
+END$$
+DELIMITER ;
+
+
+
+SELECT EMP_INFO('Aruna', 'Journel');
+
+
+Subqueries
+
+# Find the first and last names of the Managers
+
+SELECT e.first_name, e.last_name
+	FROM employees e 
+		WHERE e.emp_no IN 
+			(SELECT dm.emp_no 
+            FROM dept_manager dm);
+            
+# Extract the information about all department managers who were hired between the 1st of January 1990 and the 1st of January 1995.
+
+SELECT *
+	FROM dept_manager
+		WHERE emp_no IN 
+			(SELECT emp_no 
+            FROM employees 
+            WHERE hire_date BETWEEN '1990-01-01' AND '1995-01-01'); 
+            
+# Select the entire information for all employees whose job title is “Assistant Engineer”.
+
+SELECT *
+	FROM employees e
+		WHERE 
+        EXISTS(SELECT * 
+				FROM titles t
+                WHERE t.emp_no = e.emp_no AND title = 'Assistant Engineer');
+                
+# Assign employee numner 110022 as a manager to all employees from 10001 to 10020, and employee number 10039 as a manager to all eompoyees from 10021 to 10040.
+SELECT 
+    A.*
+FROM
+    (SELECT 
+        e.emp_no AS employee_ID,
+            MIN(de.dept_no) AS deparment_code,
+            (SELECT 
+                    emp_no
+                FROM
+                    dept_manager
+                WHERE
+                    emp_no = 110022) AS manager_ID
+    FROM
+        employees e
+    JOIN dept_emp de ON e.emp_no = de.emp_no
+    WHERE
+        e.emp_no <= 10020
+    GROUP BY e.emp_no
+    ORDER BY e.emp_no) AS A 
+UNION SELECT 
+    B.*
+FROM
+    (SELECT 
+        e.emp_no AS employee_ID,
+            MIN(de.dept_no) AS deparment_code,
+            (SELECT 
+                    emp_no
+                FROM
+                    dept_manager
+                WHERE
+                    emp_no = 110039) AS manager_ID
+    FROM
+        employees e
+    JOIN dept_emp de ON e.emp_no = de.emp_no
+    WHERE
+        e.emp_no > 10020
+    GROUP BY e.emp_no
+    ORDER BY e.emp_no
+    LIMIT 20) AS B;
+    
+DROP TABLE IF EXISTS emp_manager;
+
+CREATE TABLE emp_manager (
+    emp_no INT(11) NOT NULL,
+    dept_no CHAR(4) NULL,
+    manager_no INT(11) NOT NULL
+);
+
+INSERT INTO emp_manager
+SELECT 
+    u.*
+FROM
+    (SELECT 
+        a.*
+    FROM
+        (SELECT 
+        e.emp_no AS employee_ID,
+            MIN(de.dept_no) AS department_code,
+            (SELECT 
+                    emp_no
+                FROM
+                    dept_manager
+                WHERE
+                    emp_no = 110022) AS manager_ID
+    FROM
+        employees e
+    JOIN dept_emp de ON e.emp_no = de.emp_no
+    WHERE
+        e.emp_no <= 10020
+    GROUP BY e.emp_no
+    ORDER BY e.emp_no) AS a UNION SELECT 
+        b.*
+    FROM
+        (SELECT 
+        e.emp_no AS employee_ID,
+            MIN(de.dept_no) AS department_code,
+            (SELECT 
+                    emp_no
+                FROM
+                    dept_manager
+                WHERE
+                    emp_no = 110039) AS manager_ID
+    FROM
+        employees e
+    JOIN dept_emp de ON e.emp_no = de.emp_no
+    WHERE
+        e.emp_no > 10020
+    GROUP BY e.emp_no
+    ORDER BY e.emp_no
+    LIMIT 20) AS b UNION SELECT 
+        c.*
+    FROM
+        (SELECT 
+        e.emp_no AS employee_ID,
+            MIN(de.dept_no) AS department_code,
+            (SELECT 
+                    emp_no
+                FROM
+                    dept_manager
+                WHERE
+                    emp_no = 110039) AS manager_ID
+    FROM
+        employees e
+    JOIN dept_emp de ON e.emp_no = de.emp_no
+    WHERE
+        e.emp_no = 110022
+    GROUP BY e.emp_no) AS c UNION SELECT 
+        d.*
+    FROM
+        (SELECT 
+        e.emp_no AS employee_ID,
+            MIN(de.dept_no) AS department_code,
+            (SELECT 
+                    emp_no
+                FROM
+                    dept_manager
+                WHERE
+                    emp_no = 110022) AS manager_ID
+    FROM
+        employees e
+    JOIN dept_emp de ON e.emp_no = de.emp_no
+    WHERE
+        e.emp_no = 110039
+    GROUP BY e.emp_no) AS d) as u;
+    
+    SELECT * FROM emp_manager
+
+Creating Variables
+
+# Session Variables
+
+SET @s_var1 = 3;
+
+SELECT @s_var1;
+
+#  Global Variables
+
+SET GLOBAL max_connections = 1000;
+
+SET @@global.max_connections = 1;
+
+Window Functions
+
+USE employees;
+
+#Row number ranking functions
+
+SELECT
+	emp_no,
+    salary,
+    ROW_NUMBER() OVER() AS row_num
+FROM 
+	salaries;
+ 
+ # Using Partition By to rank all employee numbers with their salaries
+ 
+SELECT
+	emp_no,
+    salary,
+    ROW_NUMBER() OVER(PARTITION BY emp_no) AS row_num
+FROM 
+	salaries;
+
+#Using Order By to get the salaries in desc order
+
+SELECT
+	emp_no,
+    salary,
+    ROW_NUMBER() OVER(PARTITION BY emp_no ORDER BY salary DESC) AS row_num
+FROM 
+	salaries;
+    
+# Write a query that upon execution, assigns a row number to all managers we have information for in the "employees" database (regardless of their department).
+# Let the numbering disregard the department the managers have worked in. Also, let it start from the value of 1. Assign that value to the manager with the lowest employee number.
+
+SELECT
+	emp_no,
+    dept_no,
+    ROW_NUMBER() OVER(ORDER BY emp_no) AS row_num
+FROM 
+	dept_manager;
+    
+# Write a query that upon execution, assigns a sequential number for each employee number registered in the "employees" table. 
+# Partition the data by the employee's first name and order it by their last name in ascending order (for each partition).
+
+SELECT 
+	*,
+    ROW_NUMBER() OVER(PARTITION BY first_name ORDER BY last_name ASC) AS row_num
+FROM
+	employees;
+    
+# Using multiple window functions in one query
+
+SELECT
+	emp_no,
+    salary,
+    ROW_NUMBER() OVER() As row_num1,
+    ROW_NUMBER() OVER(PARTITION BY emp_no) AS row_num2,
+    ROW_NUMBER() OVER(PARTITION BY emp_no ORDER BY salary DESC) AS row_num3,
+    ROW_NUMBER() OVER(ORDER BY salary DESC) AS row_num4
+FROM 
+	salaries;
+    
+# Obtain a result set containing the salary values each manager has signed a contract for. To obtain the data, refer to the "employees" database.
+#Use window functions to add the following two columns to the final output:
+#- a column containing the row number of each row from the obtained dataset, starting from 1.
+#- a column containing the sequential row numbers associated to the rows for each manager, where their highest salary has been given a number equal to the number of rows in the given partition, and their lowest - the number 1.
+#Finally, while presenting the output, make sure that the data has been ordered by the values in the first of the row number columns, and then by the salary values for each partition in ascending order.
+
+SELECT
+	dm.emp_no,
+    salary,
+    ROW_NUMBER() OVER() AS row_num1,
+    ROW_NUMBER() OVER(PARTITION BY emp_no ORDER BY salary DESC) AS row_num2
+FROM dept_manager dm
+	JOIN salaries s ON dm.emp_no = s.emp_no
+    ORDER BY row_num1, emp_no, salary ASC;
+
+SQL Practice Questions
+
+USE employees;
+
+# Find the average salary of the male and female employees in each department. 
+
+SELECT
+    d.dept_name, e.gender, AVG(salary)
+FROM
+    salaries s
+        JOIN
+    employees e ON s.emp_no = e.emp_no
+        JOIN
+    dept_emp de ON e.emp_no = de.emp_no
+        JOIN
+    departments d ON d.dept_no = de.dept_no
+GROUP BY de.dept_no , e.gender
+ORDER BY de.dept_no;
+
+# Obtain a table containing the following three fields for all individuals whose employee number is no greater than 10040:
+# - employee number
+# - the smallest department number among the departments where an employee has worked in (use a subquery to retrieve this value from the 'dept_emp' table)
+# - assign '110022' as 'manager' to all individuals whose employee number is less than or equal to 10020, and '110039' to those whose number is between 10021 and 10040 inclusive (use a CASE statement to create the third field).
+# If you've worked correctly, you should obtain an output containing 40 rows. 
+
+
+SELECT
+    emp_no,
+    (SELECT
+            MIN(dept_no)
+        FROM
+            dept_emp de
+        WHERE
+            e.emp_no = de.emp_no) dept_no,
+    CASE
+        WHEN emp_no <= 10020 THEN '110022'
+        ELSE '110039'
+    END AS manager
+FROM
+    employees e
+WHERE
+    emp_no <= 10040; 
+    
+# Retrieve a list with all employees that have been hired in the year 2000.
+
+SELECT
+    *
+FROM
+    employees
+WHERE
+    YEAR(hire_date) = 2000;
+    
+# Retrieve a list with all employees from the ‘titles’ table who are engineers. 
+# Repeat the exercise, this time retrieving a list with all employees from the ‘titles’ table who are senior engineers.
+SELECT
+    *
+FROM
+    titles
+WHERE
+    title LIKE ('%engineer%');
+
+SELECT
+    *
+FROM
+    titles
+WHERE
+    title LIKE ('%senior engineer%');    
+    
+# Create a procedure that asks you to insert an employee number to obtain an output containing the same number, as well as the number and name of the last department the employee has worked for.
+# Finally, call the procedure for employee number 10010.
+# If you've worked correctly, you should see that employee number 10010 has worked for department number 6 - "Quality Management".
+
+DROP procedure IF EXISTS last_dept;
+
+DELIMITER $$
+CREATE PROCEDURE last_dept (in p_emp_no integer)
+BEGIN
+SELECT
+    e.emp_no, d.dept_no, d.dept_name
+FROM
+    employees e
+        JOIN
+    dept_emp de ON e.emp_no = de.emp_no
+        JOIN
+    departments d ON de.dept_no = d.dept_no
+WHERE
+    e.emp_no = p_emp_no
+        AND de.from_date = (SELECT
+            MAX(from_date)
+        FROM
+            dept_emp
+        WHERE
+            emp_no = p_emp_no);
+END$$
+DELIMITER ;
+
+call employees.last_dept(10010);
+
+# How many contracts have been registered in the ‘salaries’ table with duration of more than one year and of value higher than or equal to $100,000? 
+# Hint: You may wish to compare the difference between the start and end date of the salaries contracts.
+
+SELECT 
+    COUNT(*)
+FROM
+    salaries
+WHERE
+    salary >= 100000
+        AND DATEDIFF(to_date, from_date) > 365;
+        
+# Create a trigger that checks if the hire date of an employee is higher than the current date. If true, set this date to be the current date. Format the output appropriately (YY-MM-DD).
+# Extra challenge: You may try to declare a new variable called 'today' which stores today's data, and then use it in your trigger!
+# After creating the trigger, execute the following code to see if it's working properly.
+/*
+INSERT employees VALUES ('999904', '1970-01-31', 'John', 'Johnson', 'M', '2025-01-01');  
+
+SELECT 
+    *
+FROM
+    employees
+ORDER BY emp_no DESC;
+*/
+DROP TRIGGER IF EXISTS trig_hire_date;
+
+# Define a function that retrieves the largest contract salary value of an employee. Apply it to employee number 11356. 
+# Also, what is the lowest salary value per contract of the same employee? You may want to create a new function that will deliver this number to you.  Apply it to employee number 11356 again.
+# Feel free to apply the function to other employee numbers as well.
+DROP FUNCTION IF EXISTS f_highest_salary;
+
+DELIMITER $$
+CREATE FUNCTION f_highest_salary (p_emp_no INTEGER) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+
+DECLARE v_highest_salary DECIMAL(10,2);
+
+SELECT
+    MAX(s.salary)
+INTO v_highest_salary FROM
+    employees e
+        JOIN
+    salaries s ON e.emp_no = s.emp_no
+WHERE
+    e.emp_no = p_emp_no;
+
+RETURN v_highest_salary;
+END$$
+
+DELIMITER ;
+
+
+SELECT f_highest_salary(11356);
+
+
+DROP FUNCTION IF EXISTS f_lowest_salary;
+
+DELIMITER $$
+CREATE FUNCTION f_lowest_salary (p_emp_no INTEGER) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+
+DECLARE v_lowest_salary DECIMAL(10,2);
+
+SELECT
+    MIN(s.salary)
+INTO v_lowest_salary FROM
+    employees e
+        JOIN
+    salaries s ON e.emp_no = s.emp_no
+WHERE
+    e.emp_no = p_emp_no;
+
+RETURN v_lowest_salary;
+END$$
+
+DELIMITER ;
+
+
+SELECT f_lowest_salary(10356);
+
+# Based on the previous example, you can now try to create a function that accepts also a second parameter which would be a character sequence. 
+# Evaluate if its value is 'min' or 'max' and based on that retrieve either the lowest or the highest salary (using the same logic and code 
+# from Exercise 9). If this value is a string value different from ‘min’ or ‘max’, then the output of the function should return 
+# the difference between the highest and the lowest salary.
+
+DROP FUNCTION IF EXISTS f_salary;
+
+DELIMITER $$
+CREATE FUNCTION f_salary (p_emp_no INTEGER, p_min_or_max varchar(10)) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+
+DECLARE v_salary_info DECIMAL(10,2);
+
+SELECT
+    CASE
+        WHEN p_min_or_max = 'max' THEN MAX(s.salary)
+        WHEN p_min_or_max = 'min' THEN MIN(s.salary)
+        ELSE MAX(s.salary) - MIN(s.salary)
+    END AS salary_info
+INTO v_salary_info FROM
+    employees e
+        JOIN
+    salaries s ON e.emp_no = s.emp_no
+WHERE
+    e.emp_no = p_emp_no;
+
+RETURN v_salary_info;
+END$$
+
+DELIMITER ;
+
+select employees.f_salary(11356, 'min');
+select employees.f_salary(11356, 'max');
+select employees.f_salary(11356, 'maxxx');
+
+
+DELIMITER $$
+CREATE TRIGGER trig_hire_date
+BEFORE INSERT ON employees
+ 
+FOR EACH ROW
+BEGIN 
+    DECLARE today date;
+    SELECT date_format(sysdate(), '%Y-%m-%d') INTO today;
+ 
+	IF NEW.hire_date > today THEN
+		SET NEW.hire_date = today;
+	END IF;
+END $$
+ 
+DELIMITER ;
+
+Tableau Queries
+
+# Tableau and SQL Tasks
+
+# Task 1 Create a visualization that provides a breakdown between the male and female employees working in the company each year, starting in 1990.
+
+USE employees_mod; 
+
+SELECT 
+	YEAR(d.from_date) AS calendar_year,
+    e.gender,    
+    COUNT(e.emp_no) AS num_of_employees
+FROM     
+     t_employees e         
+          JOIN    
+     t_dept_emp d ON d.emp_no = e.emp_no
+GROUP BY calendar_year , e.gender 
+HAVING calendar_year >= 1990;
+
+# Compare the number of male managers to the number of female managers from different departments for each year, starting from 1990.
+
+SELECT
+	d.dept_name,
+    ee.gender,
+    dm.emp_no,
+    dm.from_date,
+    dm.to_date,
+    e.calendar_year,
+    CASE
+		WHEN YEAR(dm.to_date) >= e.calendar_year AND YEAR(dm.from_date) <= e.calendar_year THEN 1
+        ELSE 0
+	END AS active
+FROM
+	(SELECT 
+		YEAR(hire_date) AS calendar_year
+        FROM 
+			t_employees
+        GROUP BY calendar_year) e
+			CROSS JOIN
+		t_dept_manager dm
+			JOIN
+		t_departments d ON dm.dept_no = d.dept_no
+			JOIN
+		t_employees ee ON dm.emp_no = ee.emp_no
+ORDER BY dm.emp_no, calendar_year;
+
+# Compare the average salary of female versus male employees in the entire company until year 2002, and add a filter allowing you to see that per each department.
+
+SELECT
+	e.gender,
+    d.dept_name,
+    ROUND(AVG(s.salary),2) AS salary,
+    YEAR(s.from_date) AS calendar_year
+FROM
+	t_salaries s 
+		JOIN 
+        t_employees e ON s.emp_no = e.emp_no
+        JOIN
+		t_dept_emp de ON de.emp_no = e.emp_no
+        JOIN
+        t_departments d ON d.dept_no = de.dept_no
+GROUP BY d.dept_no, e.gender, calendar_year
+HAVING calendar_year <=2002
+ORDER BY d.dept_no;
+
+# Create an SQL stored procedure that will allow you to obtain the average male and female salary per department within a certain salary range. 
+# Let this range be defined by two values the user can insert when calling the procedure.
+# Finally, visualize the obtained result-set in Tableau as a double bar chart. 
+
+DROP PROCEDURE IF EXISTS filter_salary;
+
+DELIMITER $$
+CREATE PROCEDURE filter_salary (IN p_min_salary FLOAT, IN p_max_salary FLOAT)
+BEGIN
+SELECT 
+    e.gender, d.dept_name, AVG(s.salary) as avg_salary
+FROM
+    t_salaries s
+        JOIN
+    t_employees e ON s.emp_no = e.emp_no
+        JOIN
+    t_dept_emp de ON de.emp_no = e.emp_no
+        JOIN
+    t_departments d ON d.dept_no = de.dept_no
+    WHERE s.salary BETWEEN p_min_salary AND p_max_salary
+GROUP BY d.dept_no, e.gender;
+END$$
+
+DELIMITER ;
+
+CALL filter_salary(50000, 90000);
